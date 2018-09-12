@@ -124,7 +124,7 @@ while True:
         if question:
             while not answer_to_question(driver, question):
                 sleep(1)
-    sleep(5)
+    sleep(50)
     while not repeat_game(driver):
         sleep(1)
 
