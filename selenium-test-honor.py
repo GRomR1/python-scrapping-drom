@@ -5,61 +5,65 @@ from selenium.webdriver.common.keys import Keys
 from random import randint
 from time import sleep
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from pprint import pprint
 
 right_answers = dict()
 
-driver = webdriver.Chrome()
+def init_browser():
+    driver = webdriver.Chrome()
 
-driver.get("http://honorcup.ru/quiz/frame/")
+    driver.get("http://honorcup.ru/quiz/frame/")
 
-# на случай если нужно сохранить куки
-# pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
+    # на случай если нужно сохранить куки
+    # pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
 
-with open('cookies.pkl', 'rb') as cookie_file: # with auto close file.
-    cookies = pickle.load(cookie_file)
-    for cookie in cookies:
-        driver.add_cookie(cookie)
-        print(cookie)
+    with open('cookies.pkl', 'rb') as cookie_file: # with auto close file.
+        cookies = pickle.load(cookie_file)
+        for cookie in cookies:
+            driver.add_cookie(cookie)
+            print(cookie)
 
-driver.get("http://honorcup.ru/quiz/frame/")
-sleep(3)
+    driver.get("http://honorcup.ru/quiz/frame/")
+    sleep(3)
 
-driver.set_window_size(480, 640)
-driver.get_window_size()
+    driver.set_window_size(480, 640)
+    driver.get_window_size()
+    return driver
 
+def start_game(driver):
+    # Ищем кнопку Перейти в игру
+    enter_the_game = driver.find_element_by_xpath("//*[@class='btn btn_bottom btn_big']")
+    enter_the_game.click()
+    sleep(2)
 
-# Ищем кнопку Перейти в игру
-enter_the_game = driver.find_element_by_xpath("//*[@class='btn btn_bottom btn_big']")
-enter_the_game.click()
-sleep(2)
+    # Ищем кнопку Сражаться за кубок!
+    # driver.find_element_by_xpath("//*[@class='button stretch']").get_attribute('innerHTML')
+    fight_button = driver.find_element_by_xpath("//*[@class='button stretch']")
+    fight_button.click()
+    sleep(2)
 
-# Ищем кнопку Сражаться за кубок!
-# driver.find_element_by_xpath("//*[@class='button stretch']").get_attribute('innerHTML')
-fight_button = driver.find_element_by_xpath("//*[@class='button stretch']")
-fight_button.click()
-sleep(2)
+    # Открываем категорию IoT
+    # driver.find_element_by_xpath("//*[@class='theme__layout type-5']").get_attribute('innerHTML')
+    iot_category = driver.find_element_by_xpath("//*[@class='theme__layout type-5']")
+    iot_category.click()
+    sleep(2)
 
-# Открываем категорию IoT
-# driver.find_element_by_xpath("//*[@class='theme__layout type-5']").get_attribute('innerHTML')
-iot_category = driver.find_element_by_xpath("//*[@class='theme__layout type-5']")
-iot_category.click()
-sleep(2)
+    # Открываем первую тему - Основы IoT
+    # driver.find_elements_by_xpath("//*[@class='profile__theme']")[0].get_attribute('innerHTML')
+    # driver.find_elements_by_xpath("//*[@class='profile__theme']")[0].text
+    iot_base_theme = driver.find_elements_by_xpath("//*[@class='profile__theme']")[0]
+    iot_base_theme.click()
+    sleep(2)
 
-# Открываем первую тему - Основы IoT
-# driver.find_elements_by_xpath("//*[@class='profile__theme']")[0].get_attribute('innerHTML')
-# driver.find_elements_by_xpath("//*[@class='profile__theme']")[0].text
-iot_base_theme = driver.find_elements_by_xpath("//*[@class='profile__theme']")[0]
-iot_base_theme.click()
-sleep(2)
-
-# Выбираем Играть
-play = driver.find_element_by_xpath("//*[@class='button play']")
-# play.get_attribute('innerHTML')
-print(play.text)
-play.click()
-sleep(2)
+    # Выбираем Играть
+    play = driver.find_element_by_xpath("//*[@class='button play']")
+    # play.get_attribute('innerHTML')
+    print(play.text)
+    play.click()
+    sleep(2)
 
 # Отвечаем на вопрос
 def answer_to_question(driver, question):
@@ -90,6 +94,22 @@ def wait_question(driver):
         print(e)
         return None
 
+def check_connection_error(driver):
+    try:
+        repeat = driver.find_element_by_xpath("//*[@class='problem__icon connection']")
+        repeat.click()
+        return True
+    except Exception as e:
+        print("Args: {}\n Type: {}".format(e.args, type(e)))
+        print(e)
+        return None
+
+# Класс экрана возникающий при ошибке подключения
+# problem__icon connection
+# При ошибке подключения - Кнопка закрыть - ее класс
+# button border red
+# После ее нажатия - start_game(driver)
+
 def wait_next_round(driver):
     try:
         element = WebDriverWait(driver, 60).until(
@@ -97,6 +117,8 @@ def wait_next_round(driver):
         )
         print(element.text)
         return True
+    except NoSuchElementException as e:
+        pass
     except Exception as e:
         print("Args: {}\n Type: {}".format(e.args, type(e)))
         print(e)
@@ -115,6 +137,9 @@ def repeat_game(driver):
         return None
 
 
+driver = init_browser()
+start_game(driver)
+
 while True:
     # 5 раундов
     for i in range(5):
@@ -130,6 +155,12 @@ while True:
 
 
 repeat_game(driver)
+
+# Класс экрана возникающий при ошибке подключения
+# problem__icon connection
+# При ошибке подключения - Кнопка закрыть - ее класс
+# button border red
+# После ее нажатия - start_game(driver)
 
 # Смотрим что за вопрос
 question = driver.find_element_by_class_name("game__question-text")
