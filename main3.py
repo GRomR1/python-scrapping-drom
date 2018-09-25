@@ -12,7 +12,7 @@ from selenium import webdriver
 user_id = 'Replika777'
 URL = 'https://baza.drom.ru/user/{}'.format(user_id)
 BASE_URL = 'https://baza.drom.ru'
-driver = webdriver.Chrome()
+# driver = webdriver.Chrome()
 
 #получение документа со скроллингом
 def get_html(url):
