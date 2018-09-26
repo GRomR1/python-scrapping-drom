@@ -111,6 +111,15 @@ def parse_disk_page(content, price):
     }
 
 
+# read_brands()
+def read_brands():
+    brands = []
+    with open("brands.txt", newline='') as fh:
+        for brand in fh:
+            print(brand)
+            brands.append(brand.strip())
+    return brands
+
 # encoding='cp1251'
 def save_disks(disks, path, columns):
     if disks:
