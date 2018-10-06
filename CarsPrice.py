@@ -76,7 +76,9 @@ def save_csv(namefile, data):
 def create_csv(namefile):
     with open("{0}.csv".format(namefile), "w", encoding='utf-8') as f:
         spamwriter = csv.writer(f, dialect='excel')
-    
+
+
+
 def count_page(current_link):
     
     count = 1
