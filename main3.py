@@ -53,7 +53,9 @@ def parse_user_page(content):
                 .replace("NEW", "")\
                 .replace("!", "")\
                 .replace("Комплект дисков", "")\
-                .replace("Комплект", "")\
+                .replace("Комплект", "") \
+                .replace("Оригинальные", "") \
+                .replace("Злые", "") \
                 .strip()
         annotation = x.find('div', {'class': 'annotation'}).text
         disks.append({
@@ -121,11 +123,11 @@ def read_brands():
     return brands
 
 # encoding='cp1251'
-def save_disks(disks, path, columns):
+def save_disks_full(disks, path):
     if disks:
         with open(path,'w', newline='') as csvfile:
             # columns = ['title', 'link', 'price', 'annotation', 'title_short']
-            writer = csv.DictWriter(csvfile, fieldnames=disks[0].keys(), delimiter=',')
+            writer = csv.DictWriter(csvfile, fieldnames=disks[0].keys(), delimiter=';')
             writer.writeheader()
             # запись нескольких строк
             writer.writerows(disks)
