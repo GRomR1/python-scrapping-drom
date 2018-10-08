@@ -118,16 +118,19 @@ def read_brands():
     brands = []
     with open("brands.txt", newline='') as fh:
         for brand in fh:
-            print(brand)
+            # print(brand)
             brands.append(brand.strip())
     return brands
 
 # encoding='cp1251'
 def save_disks_full(disks, path):
     if disks:
-        with open(path,'w', newline='') as csvfile:
+        # with open(path,'w', newline='') as csvfile:
+        with open(path,'w', newline='', encoding='utf-8') as csvfile:
             # columns = ['title', 'link', 'price', 'annotation', 'title_short']
-            writer = csv.DictWriter(csvfile, fieldnames=disks[0].keys(), delimiter=';')
+            columns = list(disks[0].keys())
+            columns.sort()
+            writer = csv.DictWriter(csvfile, fieldnames=columns, delimiter=';')
             writer.writeheader()
             # запись нескольких строк
             writer.writerows(disks)

@@ -1,11 +1,10 @@
 3SDM
-ADV
-ADV.1
-ADV.1
 ADVAN
+ADV.1
+ADV
 AKITA
-AMERICAN
 American Racing
+American Muscle
 Audi
 Audi (Ауди)
 AVID.1
@@ -21,17 +20,21 @@ Cadillac (Кадилак)
 Cali Offroad
 CITIWHEELS
 Continental
-Cosmic
 COSMIS RACING
+Cosmic
 CSA
 CURVA
+Dibite
 DIP
 ENKEI
 F1R
 FELGENWERKS
+MHT Fuel
+Fuel
 FUTURE
-Giovanna
 GIOVANNA ANDROS
+Giovanna
+JS
 Hamann
 Hamann (Хаманн)
 HRE
@@ -45,6 +48,7 @@ Jeep (Джип)
 KATANA
 Koko Kuture
 LEXUS
+Lexus/Toyota
 Lexus (Лексус)
 LORENSO
 Mansory
@@ -63,9 +67,9 @@ NICHE
 OZ
 Porsche
 Porsche (Порше)
-PRO
 Pro Comp
 PRODRIVE
+PRO
 QIEE
 RACE READY
 Range Rover
@@ -74,10 +78,8 @@ RAYS
 REMINGTON
 RIDLER
 Rotiform
-ROTIFORM
 SAKURA
 Shogun
-SHOGUN
 SPORT TECHNIC
 SSR
 STANCE
@@ -85,8 +87,10 @@ TOUCHDOWN
 TOUREN
 Toyota
 Toyota (Тойота)
-TUFF
 Tuff A.T.
+TUFF
+TXW
+VS
 VERSUS
 VOLK
 Volkswagen
@@ -94,6 +98,8 @@ Volkswagen (Фольксваген)
 VOSSEN
 Vossen (Воссен)
 Vredestein
+Wald
+Weld
 WARWIC
 WCI
 WEDS
