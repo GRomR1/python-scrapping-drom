@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from pprint import pprint
 import requests
 
+import pickle
 import re
 import csv
 
@@ -150,6 +151,13 @@ def save_disks_full(disks, path):
             writer.writerows(disks)  # запись нескольких строк
 
 
+def save_brands_model(itemlist, path):
+    if itemlist:
+        with open(path, 'w', encoding='utf-8') as fh:
+            # pickle.dump(models, fh)
+            fh.write("\n".join(itemlist))
+
+
 # encoding='cp1251'
 def save_disks_to_elzakaz_csv(disks, path):
     if disks:
@@ -159,7 +167,8 @@ def save_disks_to_elzakaz_csv(disks, path):
         for k in disks_keys:
             right_name = header_attr_names.get(k, k)
             header.append(right_name)
-        with open(path,'w', newline='', encoding='utf-8') as csvfile:
+        # with open(path,'w', newline='', encoding='utf-8') as csvfile:
+        with open(path,'w', newline='', encoding='cp1251') as csvfile:
             writer = csv.writer(csvfile, delimiter=';')
             writer.writerow(header)
             for d in disks:

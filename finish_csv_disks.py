@@ -71,6 +71,7 @@ def update(disk):
     disk["dia"] = fix_dia(disk["dia"])
     disk["pcd"] = fix_pcd(disk["pcd"])
     title_short = fix_title(disk["title"])
+    title_short = '' if disk["retail_price_one"] == 0 else title_short
     # print(title_short)
     disk["title_short"] = title_short
     brand_known = fix_brand(disk["brand"])
@@ -145,13 +146,13 @@ if __name__ == '__main__':
     print(len(new_disks))
     del disks
 
-    start_code = 40000
+    # start_code = 40000
     prod_names = []
     brands = []
     brands_model = []
     for d in new_disks:
-        start_code += 1
-        d['code'] = start_code
+        # start_code += 1
+        # d['code'] = start_code
 
         prod_names.append(d['name_product'])
         brands.append(d['brand_known'])
@@ -166,9 +167,33 @@ if __name__ == '__main__':
     new_brands_model = list(OrderedDict.fromkeys(brands_model))
     new_brands.sort()
     new_brands_model.sort()
+    save_brands_model(new_brands_model, "models.txt")
+
     # pprint(new_brands)
     print("Всего товаров {}. Из них дублей {}".format(len(prod_names), len(prod_names)-len(new_prod_names)))  # 1831 906
     print("Всего брендов {}. Из них дублей {}".format(len(brands), len(brands)-len(new_brands)))  # 1831 1787
     print("Всего моделей {}. Из них дублей {}".format(len(brands_model), len(brands_model)-len(new_brands_model)))  # 1831 1651
 
-    # save_disks_to_elzakaz_csv(new_disks, "simple_disks3.csv")
+    del prod_names, brands, brands_model, new_brands, new_brands_model
+
+    new_new_disks = []
+    start_code = 40000
+    for d in new_disks:
+        if d['name_product'] in new_prod_names:
+            new_prod_names.remove(d['name_product'])
+            start_code += 1
+            d['code'] = start_code
+            new_new_disks.append(d)
+
+    del new_disks
+    print("После удаления дублей {}".format(len(new_new_disks)))  # 924
+
+    print("Загрузка изображений")
+    for d in new_new_disks:
+        download_image(d['code'], d["img_full"])
+
+    print("Наложение лого на изображение")
+    for d in new_new_disks:
+        add_watermark_to_image(d['code'])
+
+    save_disks_to_elzakaz_csv(new_new_disks, "simple_disks4.csv")

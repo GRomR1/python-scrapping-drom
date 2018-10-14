@@ -4,7 +4,7 @@ import re
 # read_brands()
 def read_brands():
     brands = []
-    with open("brands.txt", newline='') as fh:
+    with open("brands.txt", newline='', encoding="utf-8") as fh:
         for brand in fh:
             # print(brand)
             brands.append(brand.strip())
